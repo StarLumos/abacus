@@ -121,10 +121,9 @@ export function AbacusUI({ leftColumns, rightColumns }: {
     );
 }
 
-
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
-const vw = screenWidth / 100; // Calculate 1% of the screen width
+const vw = screenWidth / 100;
 // const vh = screenHeight / 100; // Calculate 1% of the screen height
 
 const styles = StyleSheet.create({
@@ -132,17 +131,15 @@ const styles = StyleSheet.create({
         margin: 'auto',
         flexDirection: 'row',
         alignItems: 'center',
+        textAlign: 'center',
         justifyContent: 'center',
         borderWidth: 20,
         borderColor: "black",
-        // maxHeight: 500
     },
     sum: {
+        textAlign: 'center',
         position: 'absolute',
         top: '-27%',
-        left: '50%',
-        // top: -275,
-        // left: -100,
         fontSize: 48
     },
     bar: {
