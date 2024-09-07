@@ -60,10 +60,36 @@ function ColumnUI({ state, base, outer, inner, beadOnClick }: {
     )
 }
 
-export function AbacusUI({ leftColumns, rightColumns }: {
-    leftColumns: number,
-    rightColumns: number
+
+function AbacusUI({ abacus, beadOnClick }: {
+    abacus: Abacus,
+    beadOnClick: (outer: number, inner: number, bead: number) => void
 }) {
+
+
+    let nondecimals = abacus.columns[0].map((column, i) =>
+        <ColumnUI state={column} base={i} key={i} outer={0} inner={i} beadOnClick={beadOnClick} />
+    )
+    let decimals = abacus.columns[1].map((column, i) =>
+        <ColumnUI state={column} base={-(i + 1)} key={i} outer={1} inner={i} beadOnClick={beadOnClick} />
+    )
+
+    let sum = abacus.evaluate()
+
+    return (
+        <View style={styles.abacus}>
+            <View style={styles.bar} />
+            <View style={styles.left}>
+                {nondecimals}
+            </View>
+            <View style={styles.right}>
+                {decimals}
+            </View>
+        </View >
+    );
+}
+
+export function AbacusContainer() {
     let [abacus, setAbacus] = useState(new Abacus(
         [
             [
@@ -85,7 +111,7 @@ export function AbacusUI({ leftColumns, rightColumns }: {
         ]
     ))
 
-    function beadOnClick(outer: number, inner: number, bead: number) {
+    function updateAbacus(outer: number, inner: number, bead: number) {
         let reconstruction = abacus.clone()
         if (reconstruction.columns[outer][inner][bead] == 0) {
             reconstruction.columns[outer][inner][bead] = 1
@@ -98,36 +124,25 @@ export function AbacusUI({ leftColumns, rightColumns }: {
         setAbacus(reconstruction)
     }
 
-    let nondecimals = abacus.columns[0].map((column, i) =>
-        <ColumnUI state={column} base={i} key={i} outer={0} inner={i} beadOnClick={beadOnClick} />
-    )
-    let decimals = abacus.columns[1].map((column, i) =>
-        <ColumnUI state={column} base={-(i + 1)} key={i} outer={1} inner={i} beadOnClick={beadOnClick} />
-    )
-
-    let sum = abacus.evaluate()
-
     return (
-        <View style={styles.overall}>
-            <Answer n={sum} />
-            <View style={styles.bar} />
-            <View style={styles.left}>
-                {nondecimals}
-            </View>
-            <View style={styles.right}>
-                {decimals}
-            </View>
-        </View >
-    );
+        <View style={styles.container}>
+            <Answer n={abacus.evaluate()} />
+            <AbacusUI abacus={abacus} beadOnClick={updateAbacus} />
+        </View>
+    )
 }
+
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 const vw = screenWidth / 100;
-// const vh = screenHeight / 100; // Calculate 1% of the screen height
 
 const styles = StyleSheet.create({
-    overall: {
+    container: {
+        justifyContent: 'center',
+        margin: 'auto'
+    },
+    abacus: {
         margin: 'auto',
         flexDirection: 'row',
         alignItems: 'center',
@@ -135,12 +150,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 20,
         borderColor: "black",
+        marginBottom: 50
     },
     sum: {
         textAlign: 'center',
-        position: 'absolute',
-        top: '-27%',
-        fontSize: 48
+        fontSize: 48,
+        marginBottom: 30
     },
     bar: {
         position: 'absolute',
@@ -183,7 +198,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     bead: {
-        backgroundColor: "darkred",
+        backgroundColor: "purple",
         width: 6 * vw,
         height: 4 * vw,
         // width

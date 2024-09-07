@@ -22,9 +22,9 @@ class Abacus {
         let total = 0
 
         for (let i = 0; i < this.columns[0].length; i++)
-            total += this.calculate(this.columns[0][i]) * (10 ** i)
+            total += this.calculate(this.columns[0][i]) * (10 ** (i - 1))
         for (let i = 0; i < this.columns[1].length; i++)
-            total += this.calculate(this.columns[1][i]) * (10 ** -(i + 1))
+            total += this.calculate(this.columns[1][i]) * (10 ** -(i + 2))
 
         let precision = 0
         var i = 0
@@ -33,7 +33,7 @@ class Abacus {
                 precision = i
             i += 1
         }
-        return parseFloat(total.toFixed(precision + 1))
+        return parseFloat(total.toFixed(precision + 2))
     }
 
     public clone(): Abacus {
