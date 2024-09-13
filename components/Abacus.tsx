@@ -1,7 +1,8 @@
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from "react-native"
-import { useState } from "react"
+import { useState, useContext } from "react"
 
 import { Abacus, type column, correctOn, correctOff } from "@/models/Abacus"
+import { SettingsContext } from "@/app/(tabs)/exercises"
 
 function Answer({ n }: {
     n: number
@@ -60,7 +61,6 @@ function ColumnUI({ state, base, outer, inner, beadOnClick }: {
     )
 }
 
-
 function AbacusUI({ abacus, beadOnClick }: {
     abacus: Abacus,
     beadOnClick: (outer: number, inner: number, bead: number) => void
@@ -87,6 +87,12 @@ function AbacusUI({ abacus, beadOnClick }: {
             </View>
         </View >
     );
+}
+
+function Clear() {
+    return (
+        <View style={styles.clear} />
+    )
 }
 
 export function AbacusContainer() {
@@ -124,14 +130,39 @@ export function AbacusContainer() {
         setAbacus(reconstruction)
     }
 
-    return (
-        <View style={styles.container}>
-            <Answer n={abacus.evaluate()} />
-            <AbacusUI abacus={abacus} beadOnClick={updateAbacus} />
-        </View>
-    )
+    const settings = useContext(SettingsContext)
+    if (settings.virtual)
+        return (
+            <View style={styles.container}>
+                <Answer n={abacus.evaluate()} />
+                <TouchableOpacity onPress={() => {
+                    setAbacus(new Abacus([
+                        [
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0]
+                        ],
+                        [
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0]
+                        ]
+                    ]))
+                }}>
+                    <Clear />
+                </TouchableOpacity>
+                <AbacusUI abacus={abacus} beadOnClick={updateAbacus} />
+            </View >
+        )
+    else
+        return (<></>)
 }
-
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -139,35 +170,47 @@ const vw = screenWidth / 100;
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
-        margin: 'auto'
+        // justifyContent: 'center',
+        margin: 'auto',
+    },
+    sum: {
+        textAlign: 'center',
+        fontSize: 48,
+        color: 'lightgray'
+    },
+    clear: {
+        backgroundColor: 'lightgrey',
+        borderRadius: 10,
+        width: 40,
+        height: 40,
+        left: '10%'
     },
     abacus: {
-        margin: 'auto',
         flexDirection: 'row',
         alignItems: 'center',
         textAlign: 'center',
         justifyContent: 'center',
         borderWidth: 20,
-        borderColor: "black",
-        marginBottom: 50
-    },
-    sum: {
-        textAlign: 'center',
-        fontSize: 48,
-        marginBottom: 30
+        borderColor: "#404040",
+        borderRadius: 15
     },
     bar: {
         position: 'absolute',
         width: '100%',
         height: 20,
-        backgroundColor: 'black',
+        backgroundColor: '#404040',
         top: '27%'
+    },
+    spoke: {
+        position: 'absolute',
+        width: 5,
+        height: '100%',
+        backgroundColor: '#404040',
     },
     indicator: {
         position: 'absolute',
-        color: 'white',
-        bottom: '119.5%',
+        color: 'lightgray',
+        bottom: '118.7%',
         fontWeight: 'bold'
     },
     left: {
@@ -191,17 +234,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
     },
-    spoke: {
-        position: 'absolute',
-        width: 5,
-        height: '100%',
-        backgroundColor: 'black',
-    },
     bead: {
-        backgroundColor: "purple",
+        backgroundColor: "lightgray",
         width: 6 * vw,
         height: 4 * vw,
-        // width
         borderWidth: 1,
         borderColor: "black",
         borderRadius: 30
@@ -210,11 +246,11 @@ const styles = StyleSheet.create({
         marginBottom: 120
     },
     turnedon: {
-        backgroundColor: 'blue',
+        backgroundColor: '#7eb2e6',
         bottom: 47
     },
     heavenlyTurnedOn: {
-        backgroundColor: 'blue',
+        backgroundColor: '#7eb2e6',
         top: 53
     }
 });

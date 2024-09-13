@@ -18,27 +18,13 @@ import { NavigationContainer } from '@react-navigation/native';
 
 export default function HomeScreen() {
     return (
-        <>
-            <AbacusContainer />
-        </>
+        <View style={{
+            backgroundColor: '#1f1f1f',
+            height: '100%'
+        }}>
+            < AbacusContainer />
+        </View >
     )
 }
 
-const styles = StyleSheet.create({
-    titleContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 8,
-    },
-    stepContainer: {
-        gap: 8,
-        marginBottom: 8,
-    },
-    reactLogo: {
-        height: 178,
-        width: 290,
-        bottom: 0,
-        left: 0,
-        position: "absolute",
-    },
-});
+const styles = StyleSheet.create({});
