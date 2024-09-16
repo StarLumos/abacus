@@ -1,20 +1,9 @@
 import {
-    Image,
-    StyleSheet,
-    Platform,
-    Text,
-    TextInput,
-    View,
-    TouchableOpacity,
+    View
 } from "react-native";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import React, { useState } from "react";
-import { Menu } from "@/components/navigation/Menu";
+import React from "react";
 import { AbacusContainer } from "@/components/Abacus"
-import { NavigationContainer } from '@react-navigation/native';
 
 export default function HomeScreen() {
     return (
@@ -26,5 +15,3 @@ export default function HomeScreen() {
         </View >
     )
 }
-
-const styles = StyleSheet.create({});

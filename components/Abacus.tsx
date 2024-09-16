@@ -65,16 +65,12 @@ function AbacusUI({ abacus, beadOnClick }: {
     abacus: Abacus,
     beadOnClick: (outer: number, inner: number, bead: number) => void
 }) {
-
-
     let nondecimals = abacus.columns[0].map((column, i) =>
         <ColumnUI state={column} base={i} key={i} outer={0} inner={i} beadOnClick={beadOnClick} />
     )
     let decimals = abacus.columns[1].map((column, i) =>
         <ColumnUI state={column} base={-(i + 1)} key={i} outer={1} inner={i} beadOnClick={beadOnClick} />
     )
-
-    let sum = abacus.evaluate()
 
     return (
         <View style={styles.abacus}>
@@ -131,37 +127,34 @@ export function AbacusContainer() {
     }
 
     const settings = useContext(SettingsContext)
-    if (settings.virtual)
-        return (
-            <View style={styles.container}>
-                <Answer n={abacus.evaluate()} />
-                <TouchableOpacity onPress={() => {
-                    setAbacus(new Abacus([
-                        [
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0]
-                        ],
-                        [
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0]
-                        ]
-                    ]))
-                }}>
-                    <Clear />
-                </TouchableOpacity>
-                <AbacusUI abacus={abacus} beadOnClick={updateAbacus} />
-            </View >
-        )
-    else
-        return (<></>)
+    return (
+        <View style={styles.container}>
+            <Answer n={abacus.evaluate()} />
+            <TouchableOpacity onPress={() => {
+                setAbacus(new Abacus([
+                    [
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0]
+                    ],
+                    [
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0]
+                    ]
+                ]))
+            }}>
+                <Clear />
+            </TouchableOpacity>
+            <AbacusUI abacus={abacus} beadOnClick={updateAbacus} />
+        </View >
+    )
 }
 
 const screenWidth = Dimensions.get('window').width;
@@ -170,7 +163,6 @@ const vw = screenWidth / 100;
 
 const styles = StyleSheet.create({
     container: {
-        // justifyContent: 'center',
         margin: 'auto',
     },
     sum: {
