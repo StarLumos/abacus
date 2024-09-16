@@ -1,8 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from "react-native"
-import { useState, useContext } from "react"
+import { useState } from "react"
 
 import { Abacus, type column, correctOn, correctOff } from "@/models/Abacus"
-import { SettingsContext } from "@/app/(tabs)/exercises"
 
 function Answer({ n }: {
     n: number
@@ -126,7 +125,6 @@ export function AbacusContainer() {
         setAbacus(reconstruction)
     }
 
-    const settings = useContext(SettingsContext)
     return (
         <View style={styles.container}>
             <Answer n={abacus.evaluate()} />
@@ -158,7 +156,6 @@ export function AbacusContainer() {
 }
 
 const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
 const vw = screenWidth / 100;
 
 const styles = StyleSheet.create({

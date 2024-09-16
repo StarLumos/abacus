@@ -1,5 +1,4 @@
-import { createContext, useContext, ReactNode } from "react";
-
+import { createContext, useContext, ReactNode, useState } from "react";
 import {
     StyleSheet,
     Text,
@@ -7,8 +6,6 @@ import {
     Pressable
 } from "react-native";
 
-import React, { useState } from "react";
-import { AbacusContainer } from "@/components/Abacus";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';

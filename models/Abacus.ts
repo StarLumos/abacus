@@ -1,5 +1,3 @@
-import { configureLayoutAnimationBatch } from "react-native-reanimated/lib/typescript/reanimated2/core"
-
 type column
     = [0,0,0,0,0]
     | [0,1,0,0,0]
@@ -80,56 +78,3 @@ function correctOff(abacus: Abacus): Abacus {
 }
 
 export { Abacus, type column, correctOn, correctOff }
-
-// here
-// function rsum(column: column, index: number = 4) {
-//     if (index == 4)
-//         return 0
-
-//     let bead = column[index]
-
-//     if (bead == 1)
-//         value(index) + rsum(column, index - 1)
-
-//     rsum(column, index + 1)
-// }
-
-// let s = (column: column) =>
-//     (column[0] ? 5 : 0) + column.slice(1).reduce((total, bead) => total + bead)
-
-// // function abasucsmath(somecolumnstate) => total sum
-
-// function ss(column: column) {
-//     let total = 0
-//     if (column[0] == 1)
-//         total += 5
-//     for (let bead of column.slice(1)) // skip first one cause line 38 already took care of him
-//         total += bead // bead is either 1 or 0, so adding 0s will do nothing (no worries)
-
-//     return total
-//     // so in summary,
-//     // its (possibly 5) + ((possibly 1 or 0) for the remaining 4)
-// }
-
-// function sum(column: column) {
-//     let total = 0
-//     let leadingBead = 0
-
-//     for (let i = 0; i < column.length - 1; i++) {
-//         if (column[i] == 1)
-//             leadingBead = Math.max(leadingBead, i)
-//     }
-
-//     for (let i = 0; i < leadingBead; i++) {
-//         column[i] = 1
-//     }
-
-//     column.forEach((bead, index) => {
-//         var worth = value(index)
-//         total += (worth * bead)
-//         console.log(index, worth, worth*bead, total)
-//     })
-//     return total
-// }
-
-// export { sum }
