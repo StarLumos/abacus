@@ -161,18 +161,20 @@ const vw = screenWidth / 100;
 const styles = StyleSheet.create({
     container: {
         margin: 'auto',
+        marginBottom: 170,
     },
     sum: {
         textAlign: 'center',
         fontSize: 48,
-        color: 'lightgray'
+        color: 'black'
     },
     clear: {
-        backgroundColor: 'lightgrey',
+        backgroundColor: '#696b6a',
         borderRadius: 10,
         width: 40,
         height: 40,
-        left: '10%'
+        left: '10%',
+        marginBottom: 5
     },
     abacus: {
         flexDirection: 'row',
@@ -180,26 +182,27 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         justifyContent: 'center',
         borderWidth: 20,
-        borderColor: "#404040",
-        borderRadius: 15
+        borderColor: "#696b6a",
+        borderRadius: 15,
+        flex: 1,
     },
     bar: {
         position: 'absolute',
         width: '100%',
         height: 20,
-        backgroundColor: '#404040',
+        backgroundColor: '#696b6a',
         top: '27%'
     },
     spoke: {
         position: 'absolute',
         width: 5,
         height: '100%',
-        backgroundColor: '#404040',
+        backgroundColor: '#696b6a',
     },
     indicator: {
         position: 'absolute',
         color: 'lightgray',
-        bottom: '118.7%',
+        bottom: '128%',
         fontWeight: 'bold'
     },
     left: {
@@ -224,9 +227,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     bead: {
-        backgroundColor: "lightgray",
-        width: 6 * vw,
-        height: 4 * vw,
+        backgroundColor: "#484848",
+        width: 5 * vw,
+        height: 3 * vw,
         borderWidth: 1,
         borderColor: "black",
         borderRadius: 30

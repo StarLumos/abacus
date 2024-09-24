@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState } from "react";
+import React, { createContext, useContext, ReactNode, useState } from "react";
 import {
     StyleSheet,
     Text,
@@ -9,26 +9,31 @@ import {
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
+import { ExerciseDropdown } from '@/components/ExerciseDropdown'
+import { Exercise, Simple } from "@/models/exercises/Exercise";
 
-// Create the context
 export const SettingsContext = createContext({
     infinity: true,
     toggle_infinity: () => { },
     audio: true,
-    toggle_audio: () => { }
+    toggle_audio: () => { },
+    exercise: new Simple(10) as Exercise
 })
 
-// Create a provider component
 export function SettingsProvider({ children }: { children: ReactNode }) {
     const [infinity, set_infinity] = useState(true);
     const [audio, set_audio] = useState(true);
+    const [exercise, set_exercise] = useState(
+        new Simple(10) as Exercise
+    )
 
     return (
         <SettingsContext.Provider value={{
             infinity: infinity,
             toggle_infinity: () => set_infinity(!infinity),
             audio: audio,
-            toggle_audio: () => set_audio(!audio)
+            toggle_audio: () => set_audio(!audio),
+            exercise: exercise
         }}>
             {children}
         </SettingsContext.Provider>
@@ -87,11 +92,33 @@ function Dock() {
     return (
         <View style={styles.dock} >
             <View style={styles.exercises}>
-                <Text style={styles.textcolor}>Timed</Text>
-                <Text style={styles.textcolor}>Timed</Text>
+                <ExerciseDropdown />
             </View>
             <Settings />
         </View >
+    )
+}
+
+class Series {
+
+}
+
+function ExerciseSection () {
+    const settings = useContext(SettingsContext)
+    const exercise = settings.exercise
+
+    return (
+        <View>
+            {
+                // exercise.operations.map((operation, index) => {
+                //     return (
+                //         <Text key={index} style={styles.textcolor}>
+                //             {operation.toString()}
+                //         </Text>
+                //     )  
+                // })
+            }
+        </View>
     )
 }
 
@@ -103,7 +130,9 @@ export default function HomeScreen() {
         }}>
             <SettingsProvider>
                 <Dock />
+                <ExerciseSection />
             </SettingsProvider>
+
         </View >
     )
 }
