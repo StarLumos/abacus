@@ -27,7 +27,6 @@ abstract class Exercise {
     constructor(
         public n: number,
     ) {
-        console.log("SDFJKSD:LJKFFJ")
         this.operations = this.generate(n)
     }
     
@@ -46,7 +45,7 @@ abstract class Exercise {
     private generate(to: number): Operation[] {
         const operations = []
         for (let i = 0; i < to; i++) 
-            operations.push(pick(this.available(this.total)))
+            operations.push(new Operation('add', 1))
         console.log("operations", operations)
         return operations
     }

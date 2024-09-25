@@ -11,6 +11,7 @@ import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { ExerciseDropdown } from '@/components/ExerciseDropdown'
 import { Exercise, Simple } from "@/models/exercises/Exercise";
+import { TextInput } from "react-native-gesture-handler";
 
 export const SettingsContext = createContext({
     infinity: true,
@@ -104,20 +105,36 @@ class Series {
 }
 
 function ExerciseSection () {
+    const [answer, setAnswer] = useState(0)
     const settings = useContext(SettingsContext)
     const exercise = settings.exercise
 
+    const ds = exercise.operations.map((operation, index) => 
+        <Text key={index} style={styles.textcolor}>
+            {operation.value} {operation.kind == 'add' ? '+' : '-'}
+        </Text>
+    )
     return (
-        <View>
+        <View style={{
+            borderWidth: '5px',
+            borderColor: 'grey',
+            width: '50%',
+            margin: 'auto',
+        }}>
+            EXERCISE:
             {
-                // exercise.operations.map((operation, index) => {
-                //     return (
-                //         <Text key={index} style={styles.textcolor}>
-                //             {operation.toString()}
-                //         </Text>
-                //     )  
-                // })
+                ds
             }
+            input box next:
+            <TextInput 
+                style={{
+                    height: 40,
+                    borderColor: 'gray',
+                    borderWidth: 1
+                }}
+                onChangeText={text => setAnswer(text => isNaN(text) ? 0 : text)}
+                value={`${answer}`}
+            />
         </View>
     )
 }

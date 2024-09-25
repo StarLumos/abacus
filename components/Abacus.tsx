@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from "react-nati
 import { useState } from "react"
 
 import { Abacus, type column, correctOn, correctOff } from "@/models/Abacus"
+import React from "react"
 
 function Answer({ n }: {
     n: number
