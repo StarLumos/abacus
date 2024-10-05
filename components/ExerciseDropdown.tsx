@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import RNPickerSelect from 'react-native-picker-select'
 import { View, Text } from 'react-native'
+import { Simple } from '@/models/exercises/Exercise'
 
 function ExerciseDropdown() {
-  const [selectedValue, setSelectedValue] = useState(null)
+  const [selectedValue, setSelectedValue] = useState('simple')
 
   const placeholder = {
     label: 'Select an option...',

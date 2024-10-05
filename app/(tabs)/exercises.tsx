@@ -93,7 +93,7 @@ function Dock() {
     return (
         <View style={styles.dock} >
             <View style={styles.exercises}>
-                <ExerciseDropdown />
+               <ExerciseDropdown />
             </View>
             <Settings />
         </View >
@@ -101,7 +101,15 @@ function Dock() {
 }
 
 class Series {
-
+    public exercises: Exercise[]
+    constructor (
+        public files: number,
+        public questions: number
+    ) { 
+        for (let i = 0; i < files; i++) {
+            this.exercises.push(new Simple(questions))
+        }
+    }
 }
 
 function ExerciseSection () {
@@ -114,7 +122,7 @@ function ExerciseSection () {
             {operation.value} {operation.kind == 'add' ? '+' : '-'}
         </Text>
     )
-    return (
+    return ( // @ts-ignore
         <View style={{
             borderWidth: '5px',
             borderColor: 'grey',

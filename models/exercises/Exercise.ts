@@ -1,4 +1,6 @@
 import { Abacus } from "../Abacus";
+import { Alert } from "react-native";
+
 
 class Operation {
     constructor(
@@ -14,77 +16,112 @@ const relativespair = (a: number, b: number) =>
     b + a == 10
 
 function pick<T>(elements: T[]): T {
+    console.log('running pick()')
     const index = Math.floor(Math.random() * elements.length)
+    console.log('--randomly generated index: ', index)
+    console.log('--length of elements: ', elements.length)
+    console.log("pick me!: ", elements[index])
     return elements[index]
 }
-
-
 
 abstract class Exercise {
     public operations: Operation[]
     public index = 0
-    
+
     constructor(
         public n: number,
     ) {
-        this.operations = this.generate(n)
+        this.operations = []
+        this.generate(n)
     }
-    
-    abstract available(n: number): Operation[]
-    
+
+    abstract available(last: number): Operation[]
+
     get total() {
+        console.log(`running total()`)
+        console.log('--length of operations: ', this.operations.length)
         let count = 0
-        for (const operation of this.operations)
-            if (operation.kind == 'add')
-                count += operation.value
-            else
-                count -= operation.value
+        try {
+            console.log('--operations we have so far:', this.operations)
+            for (const operation of this.operations)
+                if (operation.kind == 'add')
+                    count += operation.value
+                else
+                    count -= operation.value
+        } catch (e) {
+            console.log("--ERROR", e)
+        }
+        console.log(`--total: ${count}`)
         return count
     }
 
-    private generate(to: number): Operation[] {
-        const operations = []
-        for (let i = 0; i < to; i++) 
-            operations.push(new Operation('add', 1))
-        console.log("operations", operations)
-        return operations
+    private generate(to: number): void {
+        console.log(`running generate(${to}) `)
+        this.operations.push(
+            new Operation('add', Math.round(Math.random() * 8 + 1))
+        )
+        console.log('--added first operation: ', this.operations[0])
+        for (let i = 1; i < to; i++) {
+            this.operations.push(
+                pick(this.available(this.total)))
+        }
+        console.log('--generated all operations: ', this.operations)
     }
-    
-    // try(answer: number) {
-    //     if (answer == this.add(this.index))
-    //         this.index += 1
-    // }
-
-    // isCompleted(): boolean {
-    //     if (this.infinity == false)
-    //         return this.index >= this.operations.length
-    //     else
-    //         return false
-    // }
 }
 
 class Simple extends Exercise {
     constructor(n: number) {
         super(n)
     }
-    available(n: number): Operation[] {
+
+    available(latest: number): Operation[] {
         let array: Operation[] = []
-        for (let i = 1; i < 10 - n; i++) {
-            var kind: 'add' | 'subtract' = Math.random() < 0.50 ? 'add' : 'subtract'
-            if (kind == 'add')
-                if ((n < 4) && (i < 4) && (n + i < 5))
+        for (let i = 1; i < 10; i++) {
+            var kind: 'add' | 'subtract'
+            
+            function add() {
+                if ((latest < 4) && (i < 4) && (latest + i < 5)) {
                     array.push(new Operation(kind, i))
-                else if ((n < 5) && (i > 4) && (n + i <= 9))
+                }
+                else if ((latest < 5) && (i > 4) && (latest + i <= 9)) {
                     array.push(new Operation(kind, i))
-                else if ((n >= 5) && (n + i <= 9))
+                }
+                else if ((latest >= 5) && (latest + i <= 9)) {
                     array.push(new Operation(kind, i))
-            else
-                if ((i < 5) && (n - i >= 0))
+                }
+            }
+
+            function subtract() {
+                if (latest > 5) {
+                    if (i < 5)
+                        console.log(`i < 5: ${latest} - ${i} >= 5 == ${latest - i >= 5}`)
+                    else if (i <= 5)
+                        console.log(`i >= 5: ${latest} - ${i} >= 0 == ${latest - i >= 0}`)
+                }
+
+                if ((latest < 5) && (i < 5) && (latest - i >= 0)) {
                     array.push(new Operation(kind, i))
-                else if ((n >= 5) && (i <= 4) && (n - i >= 5))
+                }
+                else if ((latest >= 5) && (i < 5) && (latest - i >= 5)) {
                     array.push(new Operation(kind, i))
-                else if ((n >= 5) && (i >= 5) && (n - i >= 0))
+                }
+                else if ((latest >= 5) && (i >= 5) && (latest - i >= 0)) {
                     array.push(new Operation(kind, i))
+                }
+            }
+            
+            if (latest == 0) {
+                kind = 'add'
+                add()
+            } else if (latest == 9) {
+                kind = 'subtract'
+                subtract()
+            } else {
+                kind = "add"
+                add()
+                kind = "subtract"
+                subtract()
+            }
         }
         return array
     }
@@ -107,20 +144,20 @@ class Friends extends Exercise {
                         array.push(new Operation(kind, i))
                     else if ((n >= 5) && (n + i <= 9))
                         array.push(new Operation(kind, i))
-                else
-                    if ((i < 5) && (n - i >= 0))
-                        array.push(new Operation(kind, i))
-                    else if ((n >= 5) && (i <= 4) && (n - i >= 5))
-                        array.push(new Operation(kind, i))
-                    else if ((n >= 5) && (i >= 5) && (n - i >= 0))
-                        array.push(new Operation(kind, i))
-            else
-                if (kind == 'add')
-                    if ((n <= 4) && (i <= 4) && (n + i >= 5))
-                        array.push(new Operation(kind, i))
-                else
-                    if ((n >= 5) && (i <= 4) && (n - i >= 0) && (n - i < 5))
-                        array.push(new Operation(kind, i))
+                    else
+                        if ((i < 5) && (n - i >= 0))
+                            array.push(new Operation(kind, i))
+                        else if ((n >= 5) && (i <= 4) && (n - i >= 5))
+                            array.push(new Operation(kind, i))
+                        else if ((n >= 5) && (i >= 5) && (n - i >= 0))
+                            array.push(new Operation(kind, i))
+                        else
+                            if (kind == 'add')
+                                if ((n <= 4) && (i <= 4) && (n + i >= 5))
+                                    array.push(new Operation(kind, i))
+                                else
+                                    if ((n >= 5) && (i <= 4) && (n - i >= 0) && (n - i < 5))
+                                        array.push(new Operation(kind, i))
         }
         return array
     }
@@ -131,7 +168,7 @@ class Relatives extends Exercise {
         super(n)
     }
     available(n: number): any {
-        
+
     }
 }
 
@@ -140,7 +177,7 @@ class Mix extends Exercise {
         super(n)
     }
     available(n: number): any {
-        
+
     }
 }
 
@@ -149,7 +186,7 @@ class TwoDigits extends Exercise {
         super(n)
     }
     available(n: number): any {
-        
+
     }
 }
 
@@ -158,59 +195,8 @@ class ThreeDigits extends Exercise {
         super(n)
     }
     available(n: number): any {
-        
+
     }
 }
-
-// class FollowingAlong implements Exercise {
-//     public _operations: Operation[]
-//     public index = 0
-//     constructor(
-//         public n: number
-//     ) {
-//         this._operations = []
-//         for (let i = 0; i < n; i++) {
-//             var kind: 'add' | 'subtract' = Math.random() < 0.50 ? 'add' : 'subtract'
-//             var value = Math.random() * 100
-//             if (kind == 'subtract')
-//                 while (this.sum(n) - value < 0)
-//                     value = Math.random() * 100
-//             this._operations.push(new Operation(kind, value))
-//         }
-//     }
-
-//     sum(upto: number): number {
-//         let sum = 0
-//         for (let operation of this._operations.slice(0, upto+1))
-//             sum += operation.kind == 'add' ? operation.value : -operation.value
-//         return sum
-//     }
-
-//     try(answer: Abacus) {
-//         if (answer.evaluate() == this.sum(this.index))
-//             this.index += 1
-//     }
-//     isCompleted(): boolean {
-//         return this.index >= this._operations.length
-//     }
-// }
-
-// function isCompleted() {
-//     if answer.evaluate() == correct answer
-//         trigger next Exercise
-// }
-
-// frontend {=
-//     var exercise = new FollowingExercise(5)
-//     while (exercise.isCompleted() == false) {
-//         if (abacasHasChanged)
-//             exercise.try(abacus)
-//     }
-
-//     exercise.index = exercise.operations.length-1
-//     while (exercise.isCompleted() == false) {
-//         if (keyboard.press("enter"))
-//             exercise.try(abacus)
-//     }
 
 export { Exercise, Simple, Friends, Relatives, Mix, TwoDigits, ThreeDigits }
