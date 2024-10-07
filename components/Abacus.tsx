@@ -190,21 +190,22 @@ const styles = StyleSheet.create({
     bar: {
         position: 'absolute',
         width: '100%',
-        height: 20,
+        height: '5%',
         backgroundColor: '#696b6a',
-        top: '27%'
+        top: 6.5 * vw
     },
     spoke: {
         position: 'absolute',
-        width: 5,
+        width: 0.5 * vw,
         height: '100%',
         backgroundColor: '#696b6a',
     },
     indicator: {
         position: 'absolute',
         color: 'lightgray',
-        bottom: '128%',
-        fontWeight: 'bold'
+        bottom: 15.45 * vw,
+        fontWeight: 'bold',
+        fontSize: vw
     },
     left: {
         flexDirection: 'row-reverse'
@@ -236,14 +237,14 @@ const styles = StyleSheet.create({
         borderRadius: 30
     },
     heavenly: {
-        marginBottom: 120
+        marginBottom: 8.2 * vw
     },
     turnedon: {
         backgroundColor: '#7eb2e6',
-        bottom: 47
+        bottom: 3.6 * vw
     },
     heavenlyTurnedOn: {
         backgroundColor: '#7eb2e6',
-        top: 53
+        top: 3.5 * vw
     }
 });
