@@ -35,11 +35,11 @@ abstract class Exercise {
 
     get total() {
         let count = 0
-            for (const operation of this.operations)
-                if (operation.kind == 'add')
-                    count += operation.value
-                else
-                    count -= operation.value
+        for (const operation of this.operations)
+            if (operation.kind == 'add')
+                count += operation.value
+            else
+                count -= operation.value
         return count
     }
 
@@ -48,8 +48,10 @@ abstract class Exercise {
             new Operation('add', Math.round(Math.random() * 8 + 1))
         )
         for (let i = 1; i < to; i++) {
-            this.operations.push(
-                pick(this.available(this.total)))
+            let choice = pick(this.available(this.total))
+            if (choice == undefined)
+                throw new Error('No available choices')
+            this.operations.push(choice)
         }
     }
 }
@@ -113,7 +115,7 @@ class Friends extends Exercise {
     available(latest: number): any {
         let array: Operation[] = []
         
-        for (let i = 1; i < 10 - latest; i++) {
+        for (let i = 1; i < 10; i++) {
             var type: 'simple' | 'friends' = Math.random() < 0.50 ? 'simple' : 'friends'
             var kind: 'add' | 'subtract'
 
@@ -135,7 +137,7 @@ class Friends extends Exercise {
             }
 
             function subtract() {
-                if (type == 'friends') {
+                if (type == 'simple') {
                     if ((latest < 5) && (i < 5) && (latest - i >= 0)) {
                         array.push(new Operation(kind, i))
                     }
@@ -146,7 +148,7 @@ class Friends extends Exercise {
                         array.push(new Operation(kind, i))
                     }
                 } else {
-                    if ((latest >= 5) && (i <= 4) && (latest - i >= 0) && (latest - i < 5))
+                    if ((latest >= 5) && (i <= 4) && (latest - i < 5))
                         array.push(new Operation(kind, i))
                 }
             }

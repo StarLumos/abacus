@@ -3,14 +3,15 @@ import {
     StyleSheet,
     Text,
     View,
-    Pressable
+    Pressable,
+    Dimensions
 } from "react-native";
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { ExerciseDropdown } from '@/components/ExerciseDropdown'
-import { Exercise, Simple } from "@/models/exercises/Exercise";
+import { Exercise, Friends, Simple } from "@/models/exercises/Exercise";
 import { TextInput } from "react-native-gesture-handler";
 
 export const SettingsContext = createContext({
@@ -89,11 +90,13 @@ function Settings() {
     )
 }
 
-function Dock() {
+function Dock(
+    { setExercise }: { setExercise: (exercise: Exercise) => void }
+) {
     return (
         <View style={styles.dock} >
             <View style={styles.exercises}>
-               <ExerciseDropdown />
+               <ExerciseDropdown setExercise={setExercise}/>
             </View>
             <Settings />
         </View >
@@ -112,37 +115,85 @@ class Series {
     }
 }
 
-function ExerciseSection () {
-    const [answer, setAnswer] = useState(0)
-    const settings = useContext(SettingsContext)
-    const exercise = settings.exercise
+function ExerciseSection (
+    {
+        exercise,
+        nextExercise
+    }: { exercise: Exercise, nextExercise: (current: Exercise) => void }
+) {
+    const [answer, setAnswer] = useState("")
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const ds = exercise.operations.map((operation, index) => 
-        <Text key={index} style={styles.textcolor}>
-            {operation.value} {operation.kind == 'add' ? '+' : '-'}
+        <Text key={index} style={styles.text}>
+            {operation.kind == 'add' ? '+' : '-'} {operation.value}
         </Text>
     )
+
+    const handleSubmit = () => {
+        if ((!answer || answer.trim() === "")) {
+            alert("Please enter a valid answer.")
+        }
+        if (parseInt(answer) == exercise.total) {
+            alert("Yay, you are correct :)")
+            nextExercise(exercise)
+        } else {
+            alert("Try again")
+        }
+        console.log(`Submitted answer: ${answer}`)
+        setAnswer("")
+        setIsSubmitting(false)
+    }
+
     return ( // @ts-ignore
         <View style={{
-            borderWidth: '5px',
-            borderColor: 'grey',
-            width: '50%',
+            width: '10%',
             margin: 'auto',
+            marginTop: '80px'
         }}>
-            EXERCISE:
             {
                 ds
             }
-            input box next:
             <TextInput 
                 style={{
                     height: 40,
                     borderColor: 'gray',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    fontSize: 2.5 * vw,
+                    fontFamily: 'courier',
+                    textAlign: 'center',
+                    marginTop: vw
                 }}
-                onChangeText={text => setAnswer(text => isNaN(text) ? 0 : text)}
+                onChangeText={text => { 
+                    console.log(text)
+                    setAnswer(text)}
+                }
+                onSubmitEditing={handleSubmit}
                 value={`${answer}`}
             />
+        </View>
+    )
+}
+
+function ExerciseContainer() {
+    const settings = useContext(SettingsContext)
+    const [exercise, setExercise] = useState(settings.exercise)
+
+    function nextExercise(current: Exercise) {
+        if (current instanceof Simple) {
+            setExercise(new Simple(10))
+        } else if (current instanceof Friends) {
+            setExercise(new Friends(10))
+        }
+
+    }
+
+    return (
+        <View style={{
+            justifyContent: 'center'
+        }}>
+            <Dock setExercise={setExercise}/>
+            <ExerciseSection exercise={exercise} nextExercise={nextExercise}/>
         </View>
     )
 }
@@ -150,17 +201,19 @@ function ExerciseSection () {
 export default function HomeScreen() {
     return (
         <View style={{
-            backgroundColor: '#1f1f1f',
-            height: '100%',
+            backgroundColor: 'white',
+            height: '100%'
         }}>
             <SettingsProvider>
-                <Dock />
-                <ExerciseSection />
+                <ExerciseContainer />
             </SettingsProvider>
 
         </View >
     )
 }
+
+const screenWidth = Dimensions.get('window').width;
+const vw = screenWidth / 100;
 
 const styles = StyleSheet.create({
     untoggled: {
@@ -206,7 +259,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    textcolor: {
-        color: 'white'
+    text: {
+        color: 'black',
+        fontSize: 2.5 * vw,
+        fontFamily: 'courier',
+        textAlign: 'center'
     }
 });

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import RNPickerSelect from 'react-native-picker-select'
 import { View, Text } from 'react-native'
-import { Simple } from '@/models/exercises/Exercise'
+import { Exercise, Simple, Friends } from '@/models/exercises/Exercise'
 
-function ExerciseDropdown() {
+function ExerciseDropdown(
+  { setExercise }: { setExercise: (exercise: Exercise) => void }
+) {
   const [selectedValue, setSelectedValue] = useState('simple')
 
   const placeholder = {
@@ -14,7 +16,7 @@ function ExerciseDropdown() {
   const options = [
     { label: 'Simple concept', value: 'simple' },
     { label: 'Friends concept', value: 'friend' },
-    { label: 'Relatives concept', value: 'option3' },
+    { label: 'Relatives concept', value: 'relatives' },
   ]
 
   return (
@@ -22,7 +24,14 @@ function ExerciseDropdown() {
       <RNPickerSelect
         placeholder={placeholder}
         items={options}
-        onValueChange={(value) => setSelectedValue(value)}
+        onValueChange={(value) => {
+          setSelectedValue(value)
+          
+          if (value === 'simple') 
+            setExercise(new Simple(10))
+          if (value === 'friend')
+            setExercise(new Friends(10))
+        }}
         value={selectedValue}
       />
     </View>
