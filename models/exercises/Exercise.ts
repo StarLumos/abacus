@@ -174,8 +174,77 @@ class Relatives extends Exercise {
     constructor(n: number) {
         super(n)
     }
-    available(n: number): any {
+    available(latest: number): any {
+        let array: Operation[] = []
+        
+        for (let i = 1; i < 20; i++) {
 
+            let type: 'simple' | 'friends' | 'relatives'
+            const random = Math.random() 
+            if (random < 0.33) {
+                type = 'simple'
+            } else if (random < 0.66) {
+                type = 'friends'
+            } else {
+                type = 'relatives'
+            }
+            
+            var kind: 'add' | 'subtract'
+
+            function add() {
+                if (type == 'simple') {
+                    if ((latest < 4) && (i < 4) && (latest + i < 5)) {
+                        array.push(new Operation(kind, i))
+                    }
+                    else if ((latest < 5) && (i > 4) && (latest + i <= 9)) {
+                        array.push(new Operation(kind, i))
+                    }
+                    else if ((latest >= 5) && (latest + i <= 9)) {
+                        array.push(new Operation(kind, i))
+                    }
+                } else if (type == 'friends') {
+                    if ((latest <= 4) && (i <= 4) && (latest + i >= 5))
+                        array.push(new Operation(kind, i))
+                } else {
+                    if ((latest <= 9) && (i <= 9))
+                        array.push(new Operation(kind, i))
+                }
+            }
+
+            function subtract() {
+                if (type == 'simple') {
+                    if ((latest < 5) && (i < 5) && (latest - i >= 0)) {
+                        array.push(new Operation(kind, i))
+                    }
+                    else if ((latest >= 5) && (i < 5) && (latest - i >= 5)) {
+                        array.push(new Operation(kind, i))
+                    }
+                    else if ((latest >= 5) && (i >= 5) && (latest - i >= 0)) {
+                        array.push(new Operation(kind, i))
+                    }
+                } else if (type == 'friends') {
+                    if ((latest >= 5) && (i <= 4) && (latest - i < 5))
+                        array.push(new Operation(kind, i))
+                } else {
+                    if ((latest >= 10) && (i <= 9))
+                        array.push(new Operation(kind, i))
+                }
+            }
+
+            if (latest == 0) {
+                kind = 'add'
+                add()
+            } else if (latest == 9) {
+                kind = 'subtract'
+                subtract()
+            } else {
+                kind = "add"
+                add()
+                kind = "subtract"
+                subtract()
+            }
+        }
+        return array
     }
 }
 
@@ -183,7 +252,7 @@ class Mix extends Exercise {
     constructor(n: number) {
         super(n)
     }
-    available(n: number): any {
+    available(latest: number): any {
 
     }
 }
@@ -192,7 +261,7 @@ class TwoDigits extends Exercise {
     constructor(n: number) {
         super(n)
     }
-    available(n: number): any {
+    available(latest: number): any {
 
     }
 }
@@ -201,7 +270,7 @@ class ThreeDigits extends Exercise {
     constructor(n: number) {
         super(n)
     }
-    available(n: number): any {
+    available(latest: number): any {
 
     }
 }

@@ -11,7 +11,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { ExerciseDropdown } from '@/components/ExerciseDropdown'
-import { Exercise, Friends, Simple } from "@/models/exercises/Exercise";
+import { Exercise, Friends, Relatives, Simple } from "@/models/exercises/Exercise";
 import { TextInput } from "react-native-gesture-handler";
 
 export const SettingsContext = createContext({
@@ -180,12 +180,12 @@ function ExerciseContainer() {
     const [exercise, setExercise] = useState(settings.exercise)
 
     function nextExercise(current: Exercise) {
-        if (current instanceof Simple) {
+        if (current instanceof Simple)
             setExercise(new Simple(10))
-        } else if (current instanceof Friends) {
+        else if (current instanceof Friends)
             setExercise(new Friends(10))
-        }
-
+        else if (current instanceof Relatives) 
+            setExercise(new Relatives(10))
     }
 
     return (
