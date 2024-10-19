@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState } from "react";
+import React, { createContext, useContext, ReactNode, useState, useRef } from "react";
 import {
     StyleSheet,
     Text,
@@ -11,7 +11,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { ExerciseDropdown } from '@/components/ExerciseDropdown'
-import { Exercise, Friends, Relatives, Simple } from "@/models/exercises/Exercise";
+import { Exercise, Friends, Mixed, Relatives, Simple, ThreeDigits, TwoDigits } from "@/models/exercises/Exercise";
 import { TextInput } from "react-native-gesture-handler";
 
 export const SettingsContext = createContext({
@@ -19,14 +19,14 @@ export const SettingsContext = createContext({
     toggle_infinity: () => { },
     audio: true,
     toggle_audio: () => { },
-    exercise: new Simple(10) as Exercise
+    exercise: new Simple(5) as Exercise
 })
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
     const [infinity, set_infinity] = useState(true);
     const [audio, set_audio] = useState(true);
     const [exercise, set_exercise] = useState(
-        new Simple(10) as Exercise
+        new Simple(5) as Exercise
     )
 
     return (
@@ -145,16 +145,20 @@ function ExerciseSection (
         setIsSubmitting(false)
     }
 
+    const inputRef = useRef(null)
+
     return ( // @ts-ignore
         <View style={{
             width: '10%',
             margin: 'auto',
-            marginTop: '80px'
+            marginTop: '200px'
         }}>
             {
                 ds
             }
             <TextInput 
+                ref={inputRef}
+                onFocus={() => inputRef.current.focus()}        
                 style={{
                     height: 40,
                     borderColor: 'gray',
@@ -181,11 +185,17 @@ function ExerciseContainer() {
 
     function nextExercise(current: Exercise) {
         if (current instanceof Simple)
-            setExercise(new Simple(10))
+            setExercise(new Simple(5))
         else if (current instanceof Friends)
-            setExercise(new Friends(10))
+            setExercise(new Friends(5))
         else if (current instanceof Relatives) 
-            setExercise(new Relatives(10))
+            setExercise(new Relatives(5))
+        else if (current instanceof Mixed)
+            setExercise(new Mixed(5))
+        else if (current instanceof TwoDigits)
+            setExercise(new TwoDigits(5))
+        else if (current instanceof ThreeDigits)
+            setExercise(new ThreeDigits(5))
     }
 
     return (
