@@ -6,13 +6,20 @@ import {
     Pressable,
     Dimensions
 } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
+
+import { Exercise } from "@/models/exercises/Exercise";
 import { ExerciseDropdown } from '@/components/ExerciseDropdown'
-import { Exercise, Friends, Mixed, Relatives, Simple, ThreeDigits, TwoDigits } from "@/models/exercises/Exercise";
-import { TextInput } from "react-native-gesture-handler";
+import { Simple } from "@/models/exercises/Simple";
+import { Friends } from "@/models/exercises/Friends";
+import { Relatives } from "@/models/exercises/Relatives";
+import { Mixed } from "@/models/exercises/Mixed";
+import { TwoDigits } from "@/models/exercises/TwoDigits";
+import { ThreeDigits } from "@/models/exercises/ThreeDigits";
 
 export const SettingsContext = createContext({
     infinity: true,
