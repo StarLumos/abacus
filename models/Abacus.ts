@@ -20,9 +20,9 @@ class Abacus {
         let total = 0
 
         for (let i = 0; i < this.columns[0].length; i++)
-            total += this.calculate(this.columns[0][i]) * (10 ** (i - 1))
+            total += this.calculate(this.columns[0][i]) * (10 ** i)
         for (let i = 0; i < this.columns[1].length; i++)
-            total += this.calculate(this.columns[1][i]) * (10 ** -(i + 2))
+            total += this.calculate(this.columns[1][i]) * (10 ** -(i + 1))
 
         let precision = 0
         var i = 0
