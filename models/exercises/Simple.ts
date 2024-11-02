@@ -7,36 +7,39 @@ class Simple extends Exercise {
     }
 
     available(latest: number) {
-        let operations: (['add'] | ['subtract'] | ['add', 'subtract']) = 
-            latest == 0 ? ['add']  :
-            latest == 9 ? ['subtract'] :
-                ['add', 'subtract']
-
         let conditions = {
             add: (n: number) => (
-                (latest < 4 && n < 4 && latest + n < 5) ||
-                (latest < 5 && n > 4 && latest + n <= 9) ||
+                (latest <= 3 && n <= 4 && latest + n <= 4) ||
+                (latest <= 4 && n >= 5 && latest + n <= 9) ||
                 (latest >= 5 && latest + n <= 9)
             ),
             subtract: (n: number) => (
-                (latest < 5 && n < 5 && latest - n >= 0) ||
-                (latest >= 5 && n < 5 && latest - n >= 5) ||
+                (latest <= 4 && n <= 4 && latest - n >= 0) ||
+                (latest >= 6 && n <= 4 && latest - n >= 5) ||
                 (latest >= 5 && n >= 5 && latest - n >= 0)
             )
         }
-
-        let condition: (n: number) => boolean =
-            equivalent(operations, ['add']) ? conditions['add'] :
-            equivalent(operations, ['subtract']) ? conditions['subtract'] :
-                (n: number) => conditions['add'](n) && conditions['subtract'](n)
-
-
-        return range(1, 10)
-            .partition(n => condition(n))[0]
-            .map(eligible => 
-                operations.length == 1 ? new Operation(operations[0], eligible) :
-                [new Operation('add', eligible), new Operation('subtract', eligible)]
-            ).flat()
+        
+        const r = (
+            range(1, 10)
+                .partition(n => 
+                    (latest <= 4 && n <= 4 && latest - n >= 0) ||
+                    (latest >= 6 && n <= 4 && latest - n >= 5) ||
+                    (latest >= 5 && n >= 5 && latest - n >= 0)
+                )[0]
+                .map(n => new Operation('subtract', n))
+            .concat(
+            range(1, 10)
+                .partition(n => 
+                    (latest <= 3 && n <= 4 && latest + n <= 4) ||
+                    (latest <= 4 && n >= 5 && latest + n <= 9) ||
+                    (latest >= 5 && latest + n <= 9)
+                )[0]
+                .map(n => new Operation('add', n)))
+            )
+        console.log(`r:`)
+        console.log(r)
+        return r
     }
 }
 

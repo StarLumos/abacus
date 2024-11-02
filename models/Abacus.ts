@@ -1,3 +1,5 @@
+import { Simple } from "./exercises/Simple"
+
 type column
     = [0,0,0,0,0]
     | [0,1,0,0,0]
