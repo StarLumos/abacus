@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import RNPickerSelect from 'react-native-picker-select'
-import { View, Text } from 'react-native'
-import { Exercise, Simple, Friends, Relatives, Mixed, TwoDigits, ThreeDigits } from '@/models/exercises/Exercise'
+import { View } from 'react-native'
+import { Exercise } from '@/models/exercises/Exercise'
+import { Simple } from '@/models/exercises/Simple'
+import { Friends } from '@/models/exercises/Friends'
+import { Relatives } from '@/models/exercises/Relatives'
+import { Mixed } from '@/models/exercises/Mixed'
+import { TwoDigits } from '@/models/exercises/TwoDigits'
+import { ThreeDigits } from '@/models/exercises/ThreeDigits'
 
 function ExerciseDropdown(
   { setExercise }: { setExercise: (exercise: Exercise) => void }

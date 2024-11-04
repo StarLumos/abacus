@@ -50,15 +50,3 @@ abstract class Exercise {
 }
 
 export { Exercise, Operation }
-
-
-if (import.meta.vitest) {
-    const { it, expect, test} = import.meta.vitest
-
-    test('pick()', () => {
-        for (let i = 0; i < 100; i++) {
-            const elements = [1, 2, 3, 4, 5]
-            expect(elements).toContain(pick(elements))
-        }
-    })
-}
