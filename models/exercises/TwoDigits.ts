@@ -7,18 +7,17 @@ class TwoDigits extends Exercise {
     }
     
     available(latest: number) {
-        const random = Math.floor(Math.random() * 10) + Math.floor(Math.random())
-        
         return (
-            range(1, 20)
-                .partition(n => latest + random <= 99 && random >= 10)[0]
+            range(10, 99)
+                .partition(n => latest + n <= 99)[0] 
                 .map(n => new Operation('add', n))
             .concat(
-            range(1, 20)
-                .partition(n => latest - random >= 0 && random >= 10)[0]
-                .map(n => new Operation('subtract', n)))
+            range(10, 99)
+                .partition(n => latest - n >= 0)[0]
+                .map(n => new Operation('subtract', n))
+            )
         )
     }
 }
-export { TwoDigits }
 
+export { TwoDigits }

@@ -1,13 +1,10 @@
+import { pick } from "@/utils"
+
 class Operation {
     constructor(
         public kind: 'add' | 'subtract',
         public value: number
     ) { }
-}
-
-function pick<T>(elements: T[]): T {
-    const index = Math.floor(Math.random() * elements.length)
-    return elements[index]
 }
 
 abstract class Exercise {
@@ -26,7 +23,6 @@ abstract class Exercise {
     get total() {
         console.log(`total()`)
         let count = 0
-        // console.log(this.operations)
         for (const operation of this.operations)
             if (operation.kind == 'add')
                 count += operation.value
@@ -44,9 +40,9 @@ abstract class Exercise {
             if (choice == undefined)
                 throw new Error('No available choices')
             this.operations.push(choice)
-            // this.operations.push(new Operation('add', 1))
         }
     }
 }
 
 export { Exercise, Operation }
+

@@ -66,10 +66,10 @@ function AbacusUI({ abacus, beadOnClick }: {
     beadOnClick: (outer: number, inner: number, bead: number) => void
 }) {
     let nondecimals = abacus.columns[0].map((column, i) =>
-        <ColumnUI state={column} base={i} key={i} outer={0} inner={i} beadOnClick={beadOnClick} />
+        <ColumnUI state={column} base={i+1} key={i} outer={0} inner={i} beadOnClick={beadOnClick} />
     )
     let decimals = abacus.columns[1].map((column, i) =>
-        <ColumnUI state={column} base={-(i + 1)} key={i} outer={1} inner={i} beadOnClick={beadOnClick} />
+        <ColumnUI state={column} base={-i} key={i} outer={1} inner={i} beadOnClick={beadOnClick} />
     )
 
     return (

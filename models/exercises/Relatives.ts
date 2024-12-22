@@ -8,14 +8,14 @@ class Relatives extends Exercise {
     
     available(latest: number) {
         const kind = Math.random() < 0.50 ? 'simple' : 'relatives'
-        
+
         return (
             range(1, 10)
                 .partition(n => 
-                    kind === 'relatives' ?
+                    kind === 'relatives' && latest > 0 ?
                         (latest % 10 <= 4 && latest % 10 + n >= 10) ||
-                        (latest % 10 >= 5 && latest % 10 <= 9 && n <= 5 && latest % 10 + n >= 10) ||
-                        (latest % 10 >= 6 && latest % 10 <= 9 && n >= 6 && latest % 10 + n >= 15)
+                        (latest % 10 >= 5 && n <= 5 && latest % 10 + n >= 10) ||
+                        (latest % 10 >= 6 && n >= 6 && latest % 10 + n >= 15)
                     :
                         (latest <= 3 && n <= 4 && latest + n <= 4) ||
                         (latest <= 4 && n >= 5 && latest + n <= 9) ||
@@ -25,10 +25,10 @@ class Relatives extends Exercise {
             .concat(
             range(1, 10)
                 .partition(n => 
-                    kind === 'relatives' ?
+                    kind === 'relatives' && latest >= 10 ?
                         ((latest % 10 + 10 <= 14) && (n <= 5) && (latest - n <= 9)) ||
-                        ((latest % 10 + 10 <= 14) && (latest - n <= 4)) ||
-                        ((latest % 10 + 10 >= 15) && (latest - n <= 9))
+                        ((latest % 10 + 10 <= 13) && (n >= 6) && (latest - n <= 4)) ||
+                        ((latest % 10 + 10 >= 15) && (n >= 6) && (latest - n <= 9))
                     :
                         (latest <= 4 && n <= 4 && latest - n >= 0) ||
                         (latest >= 6 && n <= 4 && latest - n >= 5) ||

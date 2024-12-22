@@ -189,8 +189,10 @@ function ExerciseSection (
 function ExerciseContainer() {
     const settings = useContext(SettingsContext)
     const [exercise, setExercise] = useState(settings.exercise)
-
+    const [counter, setCounter] = useState(0)
+    
     function nextExercise(current: Exercise) {
+        setCounter(counter + 1)
         if (current instanceof Simple)
             setExercise(new Simple(5))
         else if (current instanceof Friends)
@@ -211,6 +213,7 @@ function ExerciseContainer() {
         }}>
             <Dock setExercise={setExercise}/>
             <ExerciseSection exercise={exercise} nextExercise={nextExercise}/>
+            <Text style={styles.counter}>{`Counter: ${counter}`}</Text>
         </View>
     )
 }
@@ -281,5 +284,14 @@ const styles = StyleSheet.create({
         fontSize: 2.5 * vw,
         fontFamily: 'courier',
         textAlign: 'center'
+    },
+    counter: {
+        position: 'absolute',
+        color: 'black',
+        fontSize: 2.5 * vw,
+        fontFamily: 'courier',
+        textAlign: 'center',
+        top: 7 * vw,
+        left: '70%'
     }
 });

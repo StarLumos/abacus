@@ -4,4 +4,9 @@ const equivalent = (a: any[], b: any[]) =>
 const range = (start: number, end: number): number[] => 
     Array.from({ length: end - start }, (_, i) => start + i)
 
-export { equivalent, range }
+function pick<T>(elements: T[]): T {
+    const index = Math.floor(Math.random() * elements.length)
+    return elements[index]
+}
+
+export { equivalent, range, pick }
